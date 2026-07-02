@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GoodJob — Logistica, Facchinaggio e Servizi Agricoli | gjob.it</title>
 <meta name="description" content="GoodJob SRLS: facchinaggio, carico e scarico, logistica, gestione magazzino, imballaggio, controllo qualità e servizi agricoli conto terzi. Sedi a Salsomaggiore Terme e Piacenza.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<meta name="theme-color" content="#1f6feb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
@@ -18,9 +21,12 @@
   /* header */
   header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
   nav{display:flex;align-items:center;justify-content:space-between;height:80px;}
-  .logo{font-weight:800;font-size:1.5rem;color:var(--ink);letter-spacing:-.5px;}
-  .logo span{color:var(--blu);}
-  .logo small{display:block;font-size:.62rem;font-weight:600;color:var(--mut);letter-spacing:2px;margin-top:-2px;}
+  .logo{display:flex;align-items:center;gap:11px;color:var(--ink);}
+  .logo .mark{width:42px;height:42px;border-radius:12px;flex-shrink:0;box-shadow:0 6px 16px rgba(31,111,235,.3);}
+  .logo .txt{display:flex;flex-direction:column;line-height:1.05;}
+  .logo .brand{font-weight:800;font-size:1.45rem;letter-spacing:-.5px;}
+  .logo .brand i{color:var(--blu);font-style:normal;}
+  .logo small{font-size:.6rem;font-weight:700;color:var(--mut);letter-spacing:2.5px;}
   .menu{display:flex;gap:28px;font-weight:600;font-size:.94rem;color:var(--mut);}
   .menu a:hover{color:var(--blu);}
   .navcta{display:flex;align-items:center;gap:18px;}
@@ -108,7 +114,8 @@
   /* footer */
   footer{background:var(--ink);color:#9fb2c6;padding:60px 0 26px;font-size:.9rem;}
   .fgrid{display:grid;grid-template-columns:2fr 1fr 1fr 1.1fr;gap:34px;margin-bottom:34px;}
-  .flogo{font-weight:800;font-size:1.4rem;color:#fff;margin-bottom:12px;}
+  .flogo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:1.4rem;color:#fff;margin-bottom:14px;}
+  .flogo .fmark{width:32px;height:32px;border-radius:9px;}
   .flogo span{color:#5b9bff;}
   footer h5{color:#fff;margin-bottom:14px;font-size:1rem;}
   footer p,footer a{line-height:1.9;color:#9fb2c6;}
@@ -127,7 +134,10 @@
 <body>
 
 <header><div class="wrap"><nav>
-  <a href="#top" class="logo">Good<span>Job</span><small>GJOB.IT</small></a>
+  <a href="#top" class="logo">
+    <svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38e0ff"/><stop offset="1" stop-color="#2b56ff"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#lg)"/><path fill="none" stroke="#fff" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" d="M43 25 A14 14 0 1 0 46 41 L34 41 L34 34"/></svg>
+    <span class="txt"><span class="brand">Good<i>Job</i></span><small>GJOB.IT</small></span>
+  </a>
   <div class="menu">
     <a href="#servizi">Servizi</a>
     <a href="#chisiamo">Chi siamo</a>
@@ -257,7 +267,7 @@
 <footer><div class="wrap">
   <div class="fgrid">
     <div>
-      <div class="flogo">Good<span>Job</span></div>
+      <div class="flogo"><svg class="fmark" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="fg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38e0ff"/><stop offset="1" stop-color="#2b56ff"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#fg)"/><path fill="none" stroke="#fff" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" d="M43 25 A14 14 0 1 0 46 41 L34 41 L34 34"/></svg>Good<span>Job</span></div>
       <p>Logistica, facchinaggio e servizi agricoli conto terzi. Il tuo partner affidabile per la movimentazione e la gestione delle merci.</p>
     </div>
     <div><h5>Servizi</h5>
