@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GoodJob — Logistica, Facchinaggio e Servizi Agricoli | gjob.it</title>
+<meta name="description" content="GoodJob SRLS: facchinaggio, carico e scarico, logistica, gestione magazzino, imballaggio, controllo qualità e servizi agricoli conto terzi. Sedi a Salsomaggiore Terme e Piacenza.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+  :root{--blu:#1f6feb;--blu2:#0b4fc4;--ink:#0d1b2a;--mut:#5b6b7c;--bg:#ffffff;--soft:#f2f6fc;--line:#e3ebf5;}
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Manrope',system-ui,sans-serif;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--ink);}
+  a{text-decoration:none;color:inherit;}
+  img{display:block;max-width:100%;}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 26px;}
+  /* header */
+  header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  nav{display:flex;align-items:center;justify-content:space-between;height:80px;}
+  .logo{font-weight:800;font-size:1.5rem;color:var(--ink);letter-spacing:-.5px;}
+  .logo span{color:var(--blu);}
+  .logo small{display:block;font-size:.62rem;font-weight:600;color:var(--mut);letter-spacing:2px;margin-top:-2px;}
+  .menu{display:flex;gap:28px;font-weight:600;font-size:.94rem;color:var(--mut);}
+  .menu a:hover{color:var(--blu);}
+  .navcta{display:flex;align-items:center;gap:18px;}
+  .tel{font-weight:800;color:var(--ink);font-size:.95rem;white-space:nowrap;}
+  .tel span{color:var(--blu);}
+  .btn{background:var(--blu);color:#fff;padding:12px 22px;border-radius:10px;font-weight:700;font-size:.9rem;transition:.2s;white-space:nowrap;}
+  .btn:hover{background:var(--blu2);}
+  .burger{display:none;font-size:1.6rem;background:none;border:none;cursor:pointer;color:var(--ink);}
+  /* hero */
+  .hero{padding:78px 0 88px;background:radial-gradient(1200px 500px at 80% -10%,#e7f0ff,transparent),var(--bg);}
+  .hgrid{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center;}
+  .hero .k{display:inline-block;background:#e7f0ff;color:var(--blu);font-weight:700;padding:7px 16px;border-radius:30px;font-size:.82rem;margin-bottom:22px;}
+  .hero h1{font-size:3.5rem;line-height:1.08;font-weight:800;letter-spacing:-1px;margin-bottom:20px;}
+  .hero h1 span{color:var(--blu);}
+  .hero .lead{color:var(--mut);font-size:1.15rem;line-height:1.6;margin-bottom:30px;max-width:480px;}
+  .hero .cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
+  .cta .g{color:var(--blu);font-weight:700;}
+  .himg{position:relative;}
+  .himg img{width:100%;border-radius:24px;box-shadow:0 30px 70px rgba(31,111,235,.22);object-fit:cover;height:450px;}
+  .float{position:absolute;left:-24px;bottom:26px;background:#fff;border-radius:16px;box-shadow:0 16px 40px rgba(13,27,42,.14);padding:18px 22px;display:flex;gap:14px;align-items:center;}
+  .float .ic{width:44px;height:44px;border-radius:12px;background:var(--blu);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+  .float b{display:block;font-size:1.05rem;}
+  .float small{color:var(--mut);font-size:.82rem;}
+  /* trust */
+  .trust{background:var(--soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .trust .in{display:grid;grid-template-columns:repeat(4,1fr);text-align:center;padding:40px 0;}
+  .trust .n{font-size:2rem;font-weight:800;color:var(--blu);}
+  .trust .l{color:var(--mut);font-size:.9rem;}
+  /* section base */
+  .sez{padding:96px 0;}
+  .head{text-align:center;max-width:640px;margin:0 auto 52px;}
+  .head .k{color:var(--blu);font-weight:800;letter-spacing:2px;text-transform:uppercase;font-size:.8rem;}
+  .head h2{font-size:2.5rem;font-weight:800;margin-top:10px;letter-spacing:-.5px;}
+  .head p{color:var(--mut);margin-top:12px;line-height:1.6;}
+  /* servizi */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:30px 26px;transition:.25s;}
+  .card:hover{border-color:var(--blu);box-shadow:0 18px 40px rgba(31,111,235,.12);transform:translateY(-4px);}
+  .card .ic{width:52px;height:52px;border-radius:14px;background:#e7f0ff;color:var(--blu);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:16px;}
+  .card h4{font-size:1.15rem;font-weight:700;margin-bottom:8px;}
+  .card p{color:var(--mut);font-size:.92rem;line-height:1.55;}
+  /* chi siamo */
+  .about{background:var(--soft);}
+  .about .in{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;padding:90px 0;}
+  .about img{width:100%;height:380px;object-fit:cover;border-radius:22px;}
+  .about .k{color:var(--blu);font-weight:800;letter-spacing:2px;text-transform:uppercase;font-size:.8rem;}
+  .about h2{font-size:2.3rem;font-weight:800;margin:10px 0 16px;letter-spacing:-.5px;}
+  .about p{color:var(--mut);line-height:1.7;margin-bottom:16px;}
+  .about ul{list-style:none;display:grid;gap:12px;margin-top:8px;}
+  .about li{display:flex;gap:12px;align-items:flex-start;font-weight:600;}
+  .about li .ck{color:var(--blu);font-weight:800;}
+  /* agri */
+  .agri{background:#0e2410;color:#fff;}
+  .agri .in{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:50px;padding:84px 0;}
+  .agri img{width:100%;height:340px;object-fit:cover;border-radius:20px;}
+  .agri .k{color:#86efac;font-weight:800;letter-spacing:2px;text-transform:uppercase;font-size:.8rem;}
+  .agri h3{font-size:2.2rem;font-weight:800;margin:10px 0 14px;}
+  .agri p{color:#c9d8c9;line-height:1.7;margin-bottom:16px;}
+  .agri .tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px;}
+  .agri .tags span{background:rgba(134,239,172,.12);border:1px solid rgba(134,239,172,.3);color:#c9f5d3;padding:7px 14px;border-radius:30px;font-size:.85rem;}
+  /* sedi */
+  .sedi .grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .locard{border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#fff;transition:.2s;}
+  .locard:hover{box-shadow:0 18px 40px rgba(31,111,235,.1);}
+  .locard .mapimg{height:200px;background-size:cover;background-position:center;}
+  .locard .bd{padding:26px 28px;}
+  .locard .badge{display:inline-block;background:#e7f0ff;color:var(--blu);font-weight:700;font-size:.75rem;padding:5px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;}
+  .locard h4{font-size:1.25rem;font-weight:800;margin-bottom:6px;}
+  .locard p{color:var(--mut);line-height:1.6;}
+  /* contatti */
+  .contact{background:linear-gradient(120deg,var(--blu),var(--blu2));color:#fff;}
+  .contact .in{display:grid;grid-template-columns:1fr 1fr;gap:56px;padding:84px 0;align-items:center;}
+  .contact h2{font-size:2.4rem;font-weight:800;margin-bottom:14px;letter-spacing:-.5px;}
+  .contact p{opacity:.92;line-height:1.65;margin-bottom:26px;}
+  .cinfo{display:grid;gap:16px;}
+  .cinfo a,.cinfo div{display:flex;gap:14px;align-items:center;font-weight:600;font-size:1.05rem;}
+  .cinfo .ic{width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0;}
+  form{background:#fff;border-radius:20px;padding:32px;color:var(--ink);}
+  form h3{font-size:1.3rem;font-weight:800;margin-bottom:18px;}
+  form label{display:block;font-size:.85rem;font-weight:700;margin-bottom:6px;color:var(--ink);}
+  form input,form textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:.95rem;margin-bottom:16px;font-family:inherit;background:var(--soft);}
+  form input:focus,form textarea:focus{outline:none;border-color:var(--blu);background:#fff;}
+  form button{width:100%;background:var(--blu);color:#fff;border:none;padding:14px;border-radius:10px;font-weight:800;font-size:1rem;cursor:pointer;transition:.2s;}
+  form button:hover{background:var(--blu2);}
+  /* footer */
+  footer{background:var(--ink);color:#9fb2c6;padding:60px 0 26px;font-size:.9rem;}
+  .fgrid{display:grid;grid-template-columns:2fr 1fr 1fr 1.1fr;gap:34px;margin-bottom:34px;}
+  .flogo{font-weight:800;font-size:1.4rem;color:#fff;margin-bottom:12px;}
+  .flogo span{color:#5b9bff;}
+  footer h5{color:#fff;margin-bottom:14px;font-size:1rem;}
+  footer p,footer a{line-height:1.9;color:#9fb2c6;}
+  footer a:hover{color:#fff;}
+  .legal{border-top:1px solid rgba(255,255,255,.14);padding-top:20px;font-size:.8rem;opacity:.75;line-height:1.7;}
+  .toplink{position:fixed;right:22px;bottom:22px;width:48px;height:48px;border-radius:50%;background:var(--blu);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 10px 26px rgba(31,111,235,.4);z-index:50;}
+  @media(max-width:900px){
+    .menu{display:none;}.hgrid{grid-template-columns:1fr;}.hero h1{font-size:2.4rem;}
+    .trust .in{grid-template-columns:1fr 1fr;gap:24px;}.grid{grid-template-columns:1fr;}
+    .about .in,.agri .in,.sedi .grid2,.contact .in{grid-template-columns:1fr;}.fgrid{grid-template-columns:1fr 1fr;}
+    .tel{display:none;}
+  }
+  @media(max-width:560px){.fgrid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<header><div class="wrap"><nav>
+  <a href="#top" class="logo">Good<span>Job</span><small>GJOB.IT</small></a>
+  <div class="menu">
+    <a href="#servizi">Servizi</a>
+    <a href="#chisiamo">Chi siamo</a>
+    <a href="#agricoltura">Agricoltura</a>
+    <a href="#sedi">Sedi</a>
+    <a href="#contatti">Contatti</a>
+  </div>
+  <div class="navcta">
+    <a href="tel:+393351461347" class="tel">📞 <span>335 146 1347</span></a>
+    <a href="#contatti" class="btn">Preventivo gratuito</a>
+  </div>
+</nav></div></header>
+
+<!-- HERO -->
+<section class="hero" id="top"><div class="wrap"><div class="hgrid">
+  <div>
+    <span class="k">🚚 Logistica &amp; Facchinaggio</span>
+    <h1>Movimentiamo le tue merci, <span>tu pensi al business</span>.</h1>
+    <p class="lead">Facchinaggio, carico e scarico, imballaggio, logistica e gestione magazzino: servizi affidabili con personale qualificato e certificato. Al tuo fianco in tutta la Regione.</p>
+    <div class="cta"><a href="#servizi" class="btn">Scopri i servizi</a><a href="tel:+393351461347" class="g">📞 Chiamaci: 335 146 1347</a></div>
+  </div>
+  <div class="himg">
+    <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=1100&q=80" alt="Magazzino e logistica GoodJob" loading="lazy">
+    <div class="float"><div class="ic">✅</div><div><b>Certificati</b><small>Requisiti facchinaggio D.M. 221/2003</small></div></div>
+  </div>
+</div></div></section>
+
+<!-- TRUST -->
+<div class="trust"><div class="wrap"><div class="in">
+  <div><div class="n">15</div><div class="l">Servizi offerti</div></div>
+  <div><div class="n">2</div><div class="l">Sedi operative</div></div>
+  <div><div class="n">24/7</div><div class="l">Disponibilità</div></div>
+  <div><div class="n">100%</div><div class="l">Affidabilità</div></div>
+</div></div></div>
+
+<!-- SERVIZI -->
+<section class="sez" id="servizi"><div class="wrap">
+  <div class="head"><div class="k">Cosa facciamo</div><h2>I nostri servizi</h2><p>Soluzioni complete per la movimentazione, lo stoccaggio e la gestione delle tue merci.</p></div>
+  <div class="grid">
+    <div class="card"><div class="ic">📦</div><h4>Facchinaggio</h4><p>Facchinaggio manuale e meccanico per aziende, magazzini, negozi ed eventi con personale qualificato.</p></div>
+    <div class="card"><div class="ic">🏗️</div><h4>Carico e scarico</h4><p>Carico e scarico merci rapido e sicuro, con squadre pronte e mezzi dedicati.</p></div>
+    <div class="card"><div class="ic">🔃</div><h4>Movimentazione merci</h4><p>Movimentazione interna delle merci in magazzino, stabilimento o punto vendita.</p></div>
+    <div class="card"><div class="ic">🚜</div><h4>Carrellisti e mulettisti</h4><p>Operatori abilitati alla conduzione di carrelli elevatori per la movimentazione dei carichi.</p></div>
+    <div class="card"><div class="ic">🔄</div><h4>Logistica conto terzi</h4><p>Gestione della logistica in outsourcing: flussi merci, trasporto e distribuzione.</p></div>
+    <div class="card"><div class="ic">🏭</div><h4>Gestione magazzino</h4><p>Magazzinaggio, stoccaggio, custodia e organizzazione ottimale degli spazi.</p></div>
+    <div class="card"><div class="ic">🎁</div><h4>Imballaggio e confezionamento</h4><p>Imballaggio, inscatolamento, assemblaggio e confezionamento pronto per la distribuzione.</p></div>
+    <div class="card"><div class="ic">🏷️</div><h4>Etichettatura e codici a barre</h4><p>Etichettatura personalizzata, applicazione di codici a barre e labeling delle merci.</p></div>
+    <div class="card"><div class="ic">📥</div><h4>Picking &amp; packing</h4><p>Preparazione ordini, prelievo, assemblaggio kit e confezione finale dei prodotti.</p></div>
+    <div class="card"><div class="ic">✅</div><h4>Controllo qualità</h4><p>Verifica, cernita e controllo delle merci in entrata e uscita per standard sempre elevati.</p></div>
+    <div class="card"><div class="ic">🚚</div><h4>Traslochi e sgomberi</h4><p>Traslochi aziendali e privati, sgombero di locali, magazzini e archivi.</p></div>
+    <div class="card"><div class="ic">🔧</div><h4>Montaggio e smontaggio</h4><p>Montaggio e smontaggio di mobilio, scaffalature e arredi, con squadre attrezzate.</p></div>
+    <div class="card"><div class="ic">🧽</div><h4>Pulizie civili e industriali</h4><p>Servizi di pulizia per uffici, capannoni e ambienti industriali.</p></div>
+    <div class="card"><div class="ic">🚛</div><h4>Autotrasporto conto terzi</h4><p>Autotrasporto merci per conto terzi e gestione della relativa logistica sul territorio.</p></div>
+    <div class="card"><div class="ic">🌱</div><h4>Agricoltura conto terzi</h4><p>Preparazione terreni, semina, potatura, raccolta e trattamento dei prodotti agricoli.</p></div>
+  </div>
+</div></section>
+
+<!-- CHI SIAMO -->
+<section class="about" id="chisiamo"><div class="wrap"><div class="in">
+  <div>
+    <div class="k">Chi siamo</div>
+    <h2>Il tuo partner per logistica e facchinaggio</h2>
+    <p>GoodJob è specializzata nella movimentazione, nel facchinaggio e nella logistica per aziende, con una divisione dedicata anche ai lavori agricoli conto terzi. Mettiamo a disposizione squadre qualificate, mezzi adeguati e la massima puntualità.</p>
+    <ul>
+      <li><span class="ck">✔</span> Requisiti di facchinaggio accertati (D.M. 221/2003)</li>
+      <li><span class="ck">✔</span> Personale formato e assicurato</li>
+      <li><span class="ck">✔</span> Interventi rapidi e su misura</li>
+      <li><span class="ck">✔</span> Due sedi operative per una copertura capillare</li>
+    </ul>
+  </div>
+  <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1100&q=80" alt="Team GoodJob al lavoro" loading="lazy">
+</div></div></section>
+
+<!-- AGRICOLTURA -->
+<section class="agri" id="agricoltura"><div class="wrap"><div class="in">
+  <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1100&q=80" alt="Servizi agricoli conto terzi" loading="lazy">
+  <div>
+    <div class="k">Divisione Agricola</div>
+    <h3>Lavori agricoli conto terzi</h3>
+    <p>Oltre alla logistica, offriamo servizi agricoli professionali per conto terzi, al fianco delle aziende agricole del territorio in ogni stagione.</p>
+    <div class="tags">
+      <span>Preparazione terreni</span><span>Semina</span><span>Potatura alberi da frutta e viti</span><span>Raccolta</span><span>Trattamento del prodotto</span>
+    </div>
+  </div>
+</div></div></section>
+
+<!-- SEDI -->
+<section class="sez sedi" id="sedi"><div class="wrap">
+  <div class="head"><div class="k">Dove siamo</div><h2>Le nostre sedi</h2><p>Due sedi operative per servirti al meglio in tutta la Regione.</p></div>
+  <div class="grid2">
+    <div class="locard">
+      <div class="mapimg" style="background-image:url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=900&q=70')"></div>
+      <div class="bd"><span class="badge">Sede legale</span><h4>Salsomaggiore Terme (PR)</h4><p>Via Don Minzoni 3 — 43039 Salsomaggiore Terme (PR)</p></div>
+    </div>
+    <div class="locard">
+      <div class="mapimg" style="background-image:url('https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=900&q=70')"></div>
+      <div class="bd"><span class="badge">Sede operativa</span><h4>Piacenza (PC)</h4><p>Via dei Ripalta 29 — 29122 Piacenza (PC)</p></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- CONTATTI -->
+<section class="contact" id="contatti"><div class="wrap"><div class="in">
+  <div>
+    <h2>Parliamo del tuo progetto</h2>
+    <p>Raccontaci le tue esigenze di logistica, facchinaggio o servizi agricoli: ti rispondiamo in tempi rapidi con un preventivo gratuito e senza impegno.</p>
+    <div class="cinfo">
+      <a href="tel:+393351461347"><span class="ic">📞</span> 335 146 1347</a>
+      <a href="mailto:info@gjob.it"><span class="ic">✉️</span> info@gjob.it</a>
+      <div><span class="ic">📍</span> Salsomaggiore Terme (PR) · Piacenza (PC)</div>
+      <div><span class="ic">🌐</span> gjob.it</div>
+    </div>
+  </div>
+  <form action="mailto:info@gjob.it" method="post" enctype="text/plain">
+    <h3>Richiedi un preventivo</h3>
+    <label for="n">Nome e cognome</label>
+    <input id="n" name="Nome" type="text" placeholder="Il tuo nome" required>
+    <label for="t">Telefono</label>
+    <input id="t" name="Telefono" type="tel" placeholder="Il tuo numero" required>
+    <label for="m">Messaggio</label>
+    <textarea id="m" name="Messaggio" rows="4" placeholder="Descrivi il servizio che ti serve..."></textarea>
+    <button type="submit">Invia richiesta</button>
+  </form>
+</div></div></section>
+
+<!-- FOOTER -->
+<footer><div class="wrap">
+  <div class="fgrid">
+    <div>
+      <div class="flogo">Good<span>Job</span></div>
+      <p>Logistica, facchinaggio e servizi agricoli conto terzi. Il tuo partner affidabile per la movimentazione e la gestione delle merci.</p>
+    </div>
+    <div><h5>Servizi</h5>
+      <p><a href="#servizi">Facchinaggio</a><br><a href="#servizi">Carico e scarico</a><br><a href="#servizi">Carrellisti e mulettisti</a><br><a href="#servizi">Logistica conto terzi</a><br><a href="#servizi">Gestione magazzino</a><br><a href="#servizi">Imballaggio ed etichettatura</a><br><a href="#servizi">Picking &amp; packing</a><br><a href="#servizi">Traslochi e sgomberi</a><br><a href="#servizi">Pulizie industriali</a><br><a href="#agricoltura">Agricoltura conto terzi</a></p>
+    </div>
+    <div><h5>Sedi</h5>
+      <p>Via Don Minzoni 3<br>43039 Salsomaggiore Terme (PR)<br><br>Via dei Ripalta 29<br>29122 Piacenza (PC)</p>
+    </div>
+    <div><h5>Contatti</h5>
+      <p><a href="tel:+393351461347">📞 335 146 1347</a><br><a href="mailto:info@gjob.it">✉️ info@gjob.it</a><br>🌐 gjob.it</p>
+    </div>
+  </div>
+  <div class="legal">
+    <b>GOODJOB SRLS</b> — P.IVA/C.F. 03037680349 · REA PR-286482 · Sedi: Via Don Minzoni 3, 43039 Salsomaggiore Terme (PR) — Via dei Ripalta 29, 29122 Piacenza (PC)<br>
+    © 2026 GoodJob · gjob.it — Tutti i diritti riservati.
+  </div>
+</div></footer>
+
+<a href="#top" class="toplink" aria-label="Torna su">↑</a>
+
+</body>
+</html>
