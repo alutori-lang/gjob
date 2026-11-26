@@ -221,7 +221,7 @@ function mostraScelta(cat) {
   document.querySelector(`input[name="scelta"][value="${v}"]`).checked = true;
 }
 
-const ETICHETTE = { pronta: "Pronte da inviare", da_leggere: "Sito da leggere", inviata: "Inviate", senza_email: "Senza email", scartata: "Scartate", esclusa: "Tolte a mano", invii: "Ultimi invii" };
+const ETICHETTE = { tutte: "Tutte", pronta: "Pronte da inviare", cerca_sito: "Cerco il sito", da_leggere: "Sito da leggere", inviata: "Inviate", senza_email: "Senza email", scartata: "Scartate", esclusa: "Tolte a mano", invii: "Ultimi invii" };
 
 function riempi(tutto) {
   const s = dati.impostazioni, c = dati.contatori;
@@ -236,7 +236,7 @@ function riempi(tutto) {
   if (avvisi.length) avviso("Da sistemare: " + avvisi.join(", ") + ".", "warn");
 
   $("stats").innerHTML = [
-    ["Inviate oggi", c.inviate_oggi + " / " + s.limite_giorno], ["Pronte", c.pronte], ["Siti da leggere", c.da_leggere],
+    ["Inviate oggi", c.inviate_oggi + " / " + s.limite_giorno], ["Pronte", c.pronte], ["Cerco il sito", c.cerca_sito || 0], ["Siti da leggere", c.da_leggere],
     ["Aziende scritte", c.inviate], ["Senza email", c.senza_email], ["Scartate", c.scartate + c.escluse],
     ["Invio", s.attivo ? (dati.orario_ok ? "acceso" : "acceso, fuori orario") : "spento"],
   ].map(([t, v]) => `<div class="stat"><b>${esc(v)}</b><span>${t}</span></div>`).join("");
@@ -252,15 +252,15 @@ function riempi(tutto) {
       : `<p class="mut">Ancora nessun invio.</p>`;
     return;
   }
-  const righe = dati.aziende.filter(a => a.stato === filtro);
+  const righe = filtro === "tutte" ? dati.aziende : dati.aziende.filter(a => a.stato === filtro);
   $("lista").innerHTML = righe.length ? `<table><tr><th>Azienda</th><th>Categoria</th><th>Email</th><th></th></tr>` +
     righe.map(a => `<tr>
       <td><b>${esc(a.nome)}</b><br><small>${esc(a.citta)}${a.telefono ? " · " + esc(a.telefono) : ""}</small>
         ${a.sito ? `<br><small><a href="${esc(a.sito)}" target="_blank" rel="noopener">${esc(a.sito.replace(/^https?:\/\//, "").slice(0, 40))}</a></small>` : ""}</td>
-      <td><span class="pill ${a.stato}">${esc(a.categoria)}</span><br><small>${esc(a.tipo || "")}</small></td>
+      <td><span class="pill ${a.stato}">${esc(a.categoria)}</span><br><small>${esc(ETICHETTE[a.stato] || a.stato)} · ${esc(a.tipo || "")}</small></td>
       <td>${(a.email || []).map(esc).join("<br>") || `<small>${esc(a.motivo || "")}</small>`}
         ${a.email_scartate?.length ? `<br><small>non usate: ${a.email_scartate.map(esc).join(", ")}</small>` : ""}</td>
-      <td>${["pronta", "da_leggere", "senza_email"].includes(a.stato) ? `<button class="link" data-esc="${a.id}">Togli</button>` : ""}
+      <td>${["pronta", "da_leggere", "senza_email", "cerca_sito"].includes(a.stato) ? `<button class="link" data-esc="${a.id}">Togli</button>` : ""}
           ${["esclusa", "scartata"].includes(a.stato) && a.sito ? `<button class="link" data-inc="${a.id}">Rimetti</button>` : ""}</td>
     </tr>`).join("") + `</table>` : `<p class="mut">Nessuna azienda qui.</p>`;
   $("lista").querySelectorAll("[data-esc]").forEach(b => b.onclick = () => azione("escludi", { id: +b.dataset.esc }));
@@ -281,8 +281,8 @@ $("cerca").onclick = async () => {
   const b = $("cerca"); b.disabled = true; b.textContent = "Cerco… (1-2 minuti)";
   try {
     const r = await chiama("cerca", { citta, categorie: categorieScelte() });
-    avviso(`${citta}: trovate ${r.trovate} aziende, ${r.tenute} adatte e con un sito. Leggo i siti poco alla volta.`);
-    dati = await chiama("stato"); filtro = "da_leggere"; riempi(false);
+    avviso(`${citta}: trovate ${r.trovate} aziende, ${r.tenute} adatte (le altre sono di altri comuni o negozi). Ora cerco i siti e le email poco alla volta: guarda la lista qui sotto.`);
+    dati = await chiama("stato"); filtro = "tutte"; riempi(false);
   } catch (e) { avviso(e.message, "err"); }
   b.disabled = false; b.textContent = "Cerca aziende";
 };
