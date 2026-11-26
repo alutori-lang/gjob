@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Bot Aziende</title>
+<style>
+  :root{--bg:#f4f6fa;--card:#fff;--ink:#1b2333;--mut:#6b7486;--line:#e2e6ee;--blu:#1f6feb;--ok:#1a7f37;--warn:#b35900;--err:#c62828}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#10141c;--card:#171c26;--ink:#e6eaf2;--mut:#98a2b5;--line:#2a3140;--blu:#4c8dff;--ok:#3fb950;--warn:#e3a008;--err:#f85149}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:1100px;margin:0 auto;padding:16px}
+  h1{font-size:20px;margin:4px 0 14px}
+  h2{font-size:16px;margin:0 0 10px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  input[type=text],input[type=password],input[type=email],input[type=number],textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}
+  textarea{min-height:200px;resize:vertical}
+  button{padding:10px 16px;border:0;border-radius:8px;background:var(--blu);color:#fff;font:inherit;font-weight:600;cursor:pointer}
+  button.sec{background:transparent;color:var(--blu);border:1px solid var(--line)}
+  button:disabled{opacity:.5;cursor:wait}
+  .grow{flex:1;min-width:180px}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+  .stat{background:var(--bg);border-radius:8px;padding:10px}
+  .stat b{display:block;font-size:22px}
+  .stat span{color:var(--mut);font-size:13px}
+  .msg{padding:10px 12px;border-radius:8px;margin-bottom:12px;display:none}
+  .msg.show{display:block}
+  .msg.ok{background:color-mix(in srgb,var(--ok) 15%,transparent)}
+  .msg.err{background:color-mix(in srgb,var(--err) 15%,transparent)}
+  .msg.warn{background:color-mix(in srgb,var(--warn) 18%,transparent)}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .tabs button{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:500;padding:6px 12px}
+  .tabs button.on{background:var(--blu);color:#fff;border-color:var(--blu)}
+  .lista{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--mut);font-weight:600;font-size:13px}
+  td small{color:var(--mut)}
+  .pill{display:inline-block;padding:2px 8px;border-radius:99px;font-size:12px;background:var(--bg)}
+  .pill.pronta{color:var(--blu)} .pill.inviata{color:var(--ok)} .pill.scartata,.pill.esclusa{color:var(--err)} .pill.senza_email{color:var(--warn)}
+  .link{background:none;border:0;color:var(--blu);padding:0;font-weight:500;cursor:pointer}
+  label.chk{display:flex;gap:8px;align-items:center;font-weight:600}
+  .mut{color:var(--mut);font-size:13px}
+  #login{max-width:380px;margin:60px auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="login" class="card">
+    <h1>Bot Aziende</h1>
+    <p class="mut">Pannello riservato.</p>
+    <input id="pw" type="password" placeholder="Password" autocomplete="current-password">
+    <div style="height:10px"></div>
+    <button id="entra">Entra</button>
+    <div id="loginErr" class="mut" style="color:var(--err);margin-top:8px"></div>
+  </div>
+
+  <div id="app" hidden>
+    <h1>Bot Aziende</h1>
+    <div id="msg" class="msg"></div>
+
+    <div class="card">
+      <h2>1. Cerca le aziende in una città</h2>
+      <div class="row">
+        <input id="citta" class="grow" type="text" placeholder="Es. Fidenza">
+        <button id="cerca">Cerca aziende</button>
+      </div>
+      <p class="mut">Cerca su Google Maps aziende agricole, industrie e magazzini. Scarta negozi, supermercati, bar e ristoranti. Le email le prende dai siti delle aziende, poco alla volta (ogni 5 minuti).</p>
+    </div>
+
+    <div class="card">
+      <h2>2. La mail che mando a tutte</h2>
+      <input id="oggetto" type="text" placeholder="Oggetto della mail">
+      <div style="height:8px"></div>
+      <textarea id="testo" placeholder="Testo della mail, con la firma in fondo"></textarea>
+      <p class="mut">In fondo a ogni mail aggiungo da solo il link per chi non vuole più ricevere comunicazioni. Ogni indirizzo riceve la mail una volta sola.</p>
+      <div class="row">
+        <label class="chk"><input id="attivo" type="checkbox"> Invio acceso</label>
+        <span class="mut">Massimo al giorno</span>
+        <input id="limite" type="number" min="1" max="150" style="width:90px">
+        <button id="salva">Salva</button>
+      </div>
+      <div style="height:10px"></div>
+      <div class="row">
+        <input id="provaEmail" class="grow" type="email" placeholder="Tua email per una prova">
+        <button id="prova" class="sec">Manda una prova</button>
+      </div>
+      <p class="mut">Invia solo dal lunedì al venerdì, dalle 8 alle 18.</p>
+    </div>
+
+    <div class="card">
+      <h2>Situazione</h2>
+      <div class="stats" id="stats"></div>
+    </div>
+
+    <div class="card">
+      <div class="tabs" id="tabs"></div>
+      <div class="lista" id="lista"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const URL_BOT = "https://phxasihantyrlgixirpu.supabase.co/functions/v1/gjob-bot";
+let password = "";
+try { password = localStorage.getItem("gjb_pw") || ""; } catch {}
+let dati = null, filtro = "pronta";
+const $ = (id) => document.getElementById(id);
+
+async function chiama(azione, extra = {}) {
+  const r = await fetch(URL_BOT, { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ azione, password, ...extra }) });
+  const j = await r.json().catch(() => ({ errore: "Risposta non valida" }));
+  if (!r.ok) throw new Error(j.errore || ("Errore " + r.status));
+  return j;
+}
+
+function avviso(testo, tipo = "ok") {
+  const m = $("msg"); m.textContent = testo; m.className = "msg show " + tipo;
+}
+
+async function entra() {
+  password = $("pw").value.trim() || password;
+  try {
+    dati = await chiama("stato");
+    try { localStorage.setItem("gjb_pw", password); } catch {}
+    $("login").hidden = true; $("app").hidden = false;
+    riempi(true);
+  } catch (e) { $("loginErr").textContent = e.message; }
+}
+
+function esc(s) { return String(s ?? "").replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c])); }
+
+const ETICHETTE = { pronta: "Pronte da inviare", da_leggere: "Sito da leggere", inviata: "Inviate", senza_email: "Senza email", scartata: "Scartate", esclusa: "Tolte a mano", invii: "Ultimi invii" };
+
+function riempi(tutto) {
+  const s = dati.impostazioni, c = dati.contatori;
+  if (tutto) {
+    $("oggetto").value = s.oggetto; $("testo").value = s.testo;
+    $("attivo").checked = s.attivo; $("limite").value = s.limite_giorno;
+  }
+  const avvisi = [];
+  if (dati.manca.google) avvisi.push("manca la chiave di Google Maps");
+  if (dati.manca.smtp) avvisi.push("manca la password di info@gjob.it");
+  if (avvisi.length) avviso("Da sistemare: " + avvisi.join(", ") + ".", "warn");
+
+  $("stats").innerHTML = [
+    ["Inviate oggi", c.inviate_oggi + " / " + s.limite_giorno], ["Pronte", c.pronte], ["Siti da leggere", c.da_leggere],
+    ["Aziende scritte", c.inviate], ["Senza email", c.senza_email], ["Scartate", c.scartate + c.escluse],
+    ["Invio", s.attivo ? (dati.orario_ok ? "acceso" : "acceso, fuori orario") : "spento"],
+  ].map(([t, v]) => `<div class="stat"><b>${esc(v)}</b><span>${t}</span></div>`).join("");
+
+  $("tabs").innerHTML = Object.keys(ETICHETTE).map(k =>
+    `<button data-f="${k}" class="${k === filtro ? "on" : ""}">${ETICHETTE[k]}</button>`).join("");
+  $("tabs").querySelectorAll("button").forEach(b => b.onclick = () => { filtro = b.dataset.f; riempi(false); });
+
+  if (filtro === "invii") {
+    $("lista").innerHTML = dati.invii.length ? `<table><tr><th>Quando</th><th>Email</th><th>Esito</th></tr>` +
+      dati.invii.map(i => `<tr><td>${new Date(i.inviata).toLocaleString("it-IT")}</td><td>${esc(i.email)}</td>
+        <td>${i.esito === "inviata" ? "inviata" : `<span style="color:var(--err)">errore</span> <small>${esc(i.errore)}</small>`}</td></tr>`).join("") + `</table>`
+      : `<p class="mut">Ancora nessun invio.</p>`;
+    return;
+  }
+  const righe = dati.aziende.filter(a => a.stato === filtro);
+  $("lista").innerHTML = righe.length ? `<table><tr><th>Azienda</th><th>Categoria</th><th>Email</th><th></th></tr>` +
+    righe.map(a => `<tr>
+      <td><b>${esc(a.nome)}</b><br><small>${esc(a.citta)}${a.telefono ? " · " + esc(a.telefono) : ""}</small>
+        ${a.sito ? `<br><small><a href="${esc(a.sito)}" target="_blank" rel="noopener">${esc(a.sito.replace(/^https?:\/\//, "").slice(0, 40))}</a></small>` : ""}</td>
+      <td><span class="pill ${a.stato}">${esc(a.categoria)}</span><br><small>${esc(a.tipo || "")}</small></td>
+      <td>${(a.email || []).map(esc).join("<br>") || `<small>${esc(a.motivo || "")}</small>`}
+        ${a.email_scartate?.length ? `<br><small>non usate: ${a.email_scartate.map(esc).join(", ")}</small>` : ""}</td>
+      <td>${["pronta", "da_leggere", "senza_email"].includes(a.stato) ? `<button class="link" data-esc="${a.id}">Togli</button>` : ""}
+          ${["esclusa", "scartata"].includes(a.stato) && a.sito ? `<button class="link" data-inc="${a.id}">Rimetti</button>` : ""}</td>
+    </tr>`).join("") + `</table>` : `<p class="mut">Nessuna azienda qui.</p>`;
+  $("lista").querySelectorAll("[data-esc]").forEach(b => b.onclick = () => azione("escludi", { id: +b.dataset.esc }));
+  $("lista").querySelectorAll("[data-inc]").forEach(b => b.onclick = () => azione("includi", { id: +b.dataset.inc }));
+}
+
+async function azione(nome, extra) {
+  try { await chiama(nome, extra); dati = await chiama("stato"); riempi(false); }
+  catch (e) { avviso(e.message, "err"); }
+}
+
+$("entra").onclick = entra;
+$("pw").onkeydown = (e) => { if (e.key === "Enter") entra(); };
+
+$("cerca").onclick = async () => {
+  const citta = $("citta").value.trim();
+  if (!citta) return avviso("Scrivi una città.", "err");
+  const b = $("cerca"); b.disabled = true; b.textContent = "Cerco… (1-2 minuti)";
+  try {
+    const r = await chiama("cerca", { citta });
+    avviso(`${citta}: trovate ${r.trovate} aziende, ${r.tenute} adatte e con un sito. Leggo i siti poco alla volta.`);
+    dati = await chiama("stato"); filtro = "da_leggere"; riempi(false);
+  } catch (e) { avviso(e.message, "err"); }
+  b.disabled = false; b.textContent = "Cerca aziende";
+};
+
+$("salva").onclick = async () => {
+  try {
+    await chiama("salva", { oggetto: $("oggetto").value, testo: $("testo").value, attivo: $("attivo").checked, limite_giorno: +$("limite").value });
+    dati = await chiama("stato"); riempi(false); avviso("Salvato.");
+  } catch (e) { avviso(e.message, "err"); }
+};
+
+$("prova").onclick = async () => {
+  const email = $("provaEmail").value.trim();
+  if (!email) return avviso("Scrivi la tua email per la prova.", "err");
+  try { await chiama("prova", { email }); avviso("Prova inviata a " + email + ". Salva prima il testo se l'hai cambiato."); }
+  catch (e) { avviso(e.message, "err"); }
+};
+
+setInterval(async () => { if (!$("app").hidden) { try { dati = await chiama("stato"); riempi(false); } catch {} } }, 60000);
+if (password) entra();
+</script>
+</body>
+</html>
