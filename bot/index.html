@@ -126,6 +126,8 @@ async function chiama(azione, extra = {}) {
 
 function avviso(testo, tipo = "ok") {
   const m = $("msg"); m.textContent = testo; m.className = "msg show " + tipo;
+  // Il messaggio sta in cima: lo porto in vista, altrimenti chi preme un pulsante in basso non lo vede.
+  try { m.scrollIntoView({ behavior: "smooth", block: "center" }); } catch {}
 }
 
 async function entra() {
