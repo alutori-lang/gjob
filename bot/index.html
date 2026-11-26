@@ -79,6 +79,11 @@
 
     <div class="card">
       <h2>2. La mail che mando a tutte</h2>
+      <div class="row" style="margin-bottom:10px">
+        <b>Modelli pronti:</b>
+        <select id="modello" class="grow" style="padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit"></select>
+      </div>
+      <p class="mut" style="margin-top:0">Scegli un modello: oggetto e testo si riempiono da soli (puoi modificarli). Poi premi <b>Salva</b>.</p>
       <p class="mut" style="margin-top:0"><b>Oggetto</b>: una versione per riga, il bot ne sceglie una a caso per ogni mail.
         <b>Testo</b>: se vuoi più versioni separale con una riga che contiene solo <code>===</code>.
         Scrivi <code>{azienda}</code> dove vuoi il nome dell'azienda (es. "Buongiorno, ci rivolgiamo a {azienda}...").</p>
@@ -141,11 +146,69 @@ async function entra() {
     dati = await chiama("stato");
     try { localStorage.setItem("gjb_pw", password); } catch {}
     $("login").hidden = true; $("app").hidden = false;
-    riempi(true);
+    riempi(true); riempiModelli();
   } catch (e) { $("loginErr").textContent = e.message; }
 }
 
 function esc(s) { return String(s ?? "").replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c])); }
+
+// ───── Modelli pronti ─────
+// Solo servizi IN APPALTO (mai "forniamo personale": sarebbe somministrazione senza autorizzazione).
+const FIRMA = "Cordiali saluti,\nGOODJOB SRLS\nTel. 335 146 1347\ninfo@gjob.it - www.gjob.it";
+const MODELLI = [
+  { tipo: "facchinaggio", nome: "Facchinaggio 1 - Presentazione classica",
+    oggetto: ["Facchinaggio e servizi di magazzino in appalto per {azienda}", "Una proposta per il magazzino di {azienda}", "Servizi di facchinaggio e logistica in zona: GOODJOB SRLS"],
+    testo: "Buongiorno,\n\nci rivolgiamo a {azienda} perché siamo GOODJOB SRLS, azienda della provincia di Parma che esegue servizi in appalto per imprese industriali e commerciali:\n\n- facchinaggio, carico e scarico merci\n- movimentazione e gestione magazzino\n- picking, imballaggio ed etichettatura\n\nOrganizziamo il servizio con il nostro personale e un nostro responsabile, adattandoci ai vostri volumi e ai vostri picchi di lavoro.\n\nSe vi può interessare, siamo disponibili per un incontro o un preventivo senza impegno.\n\n" },
+  { tipo: "facchinaggio", nome: "Facchinaggio 2 - Breve e diretta",
+    oggetto: ["Carico, scarico e magazzino: possiamo aiutare {azienda}?", "Servizi di facchinaggio per {azienda}"],
+    testo: "Buongiorno,\n\nsiamo GOODJOB SRLS e ci occupiamo di facchinaggio, carico e scarico e gestione magazzino in appalto, per aziende della provincia di Parma e Piacenza.\n\nSe a {azienda} serve un supporto stabile o solo per i periodi di maggiore lavoro, ci farebbe piacere inviarvi un preventivo.\n\nBasta rispondere a questa mail o chiamarci.\n\n" },
+  { tipo: "facchinaggio", nome: "Facchinaggio 3 - Picchi di lavoro e stagionalità",
+    oggetto: ["Picchi di lavoro in magazzino? Una soluzione per {azienda}", "Supporto per i periodi di maggior lavoro di {azienda}"],
+    testo: "Buongiorno,\n\nnei periodi di maggiore lavoro il magazzino è spesso il primo reparto a soffrire: ritardi nelle spedizioni, carichi accumulati, straordinari.\n\nGOODJOB SRLS esegue in appalto i servizi di facchinaggio, carico e scarico, picking e preparazione ordini, con personale nostro coordinato da un nostro responsabile. Voi indicate i volumi e i tempi, al resto pensiamo noi.\n\nSaremmo felici di capire se possiamo essere utili anche a {azienda}.\n\n" },
+  { tipo: "facchinaggio", nome: "Facchinaggio 4 - Per industrie alimentari",
+    oggetto: ["Servizi di magazzino e confezionamento per {azienda}", "Facchinaggio e logistica per l'industria alimentare"],
+    testo: "Buongiorno,\n\nlavoriamo con aziende del settore alimentare della zona di Parma (salumifici, prosciuttifici, caseifici) per i servizi di magazzino in appalto:\n\n- carico e scarico merci\n- movimentazione e stoccaggio\n- confezionamento, imballaggio ed etichettatura\n\nIl nostro personale è formato e segue le vostre procedure interne.\n\nSe {azienda} cerca un partner affidabile per queste attività, siamo disponibili per un incontro conoscitivo.\n\n" },
+  { tipo: "facchinaggio", nome: "Facchinaggio 5 - Logistica e trasporti",
+    oggetto: ["Movimentazione merci e magazzino in appalto per {azienda}", "Un partner per la logistica di {azienda}"],
+    testo: "Buongiorno,\n\nsiamo GOODJOB SRLS e supportiamo aziende di trasporti e logistica con servizi in appalto di carico e scarico, movimentazione merci con carrello elevatore, picking e preparazione delle spedizioni.\n\nPossiamo seguire turni fissi oppure intervenire solo quando serve.\n\nSe vi interessa, possiamo prepararvi un preventivo sulla base dei vostri volumi.\n\n" },
+  { tipo: "facchinaggio", nome: "Facchinaggio 6 - Pulizie e servizi industriali",
+    oggetto: ["Facchinaggio e pulizie industriali per {azienda}", "Servizi in appalto per capannoni e magazzini"],
+    testo: "Buongiorno,\n\nGOODJOB SRLS offre alle aziende della zona un unico referente per diversi servizi in appalto:\n\n- facchinaggio e movimentazione merci\n- gestione e riordino magazzino\n- pulizie civili e industriali di capannoni e uffici\n- montaggio e smontaggio, sgomberi\n\nUn solo fornitore, un solo responsabile, meno pensieri per {azienda}.\n\nSiamo disponibili per un sopralluogo gratuito.\n\n" },
+  { tipo: "facchinaggio", nome: "Facchinaggio 7 - Richiamo gentile",
+    oggetto: ["Una breve presentazione per {azienda}", "GOODJOB SRLS: servizi di magazzino in zona"],
+    testo: "Buongiorno,\n\nvi rubo solo un minuto: sono GOODJOB SRLS, impresa che esegue in appalto servizi di facchinaggio e magazzino per aziende della provincia di Parma e Piacenza.\n\nNon vi chiediamo nulla ora: se in futuro {azienda} avesse bisogno di un supporto per carico, scarico o gestione del magazzino, ci farebbe piacere essere tra i fornitori che valutate.\n\nGrazie per l'attenzione.\n\n" },
+  { tipo: "agricoltura", nome: "Agricoltura 1 - Lavori agricoli conto terzi",
+    oggetto: ["Lavori agricoli per conto terzi per {azienda}", "Raccolta, potatura e lavori in campo: una proposta per {azienda}"],
+    testo: "Buongiorno,\n\nsiamo GOODJOB SRLS, impresa della zona di Parma e Piacenza che esegue lavori agricoli per conto terzi:\n\n- raccolta di prodotti agricoli\n- potatura di vigneti e frutteti\n- preparazione dei terreni e semina\n- trattamento del raccolto\n\nCi occupiamo noi dell'organizzazione e delle squadre di lavoro, con un nostro responsabile in campo.\n\nSe a {azienda} può servire un aiuto per la prossima stagione, siamo disponibili per un preventivo senza impegno.\n\n" },
+  { tipo: "agricoltura", nome: "Agricoltura 2 - Vendemmia",
+    oggetto: ["Vendemmia e lavori in vigneto per {azienda}", "Squadre per la vendemmia: GOODJOB SRLS"],
+    testo: "Buongiorno,\n\nper la prossima vendemmia GOODJOB SRLS può eseguire per {azienda} i lavori in vigneto per conto terzi: vendemmia, potatura, legatura e cura della vigna.\n\nLavoriamo con squadre organizzate e un nostro responsabile, rispettando i vostri tempi e le vostre indicazioni.\n\nSe vi interessa, contattateci per pianificare insieme la stagione.\n\n" },
+  { tipo: "agricoltura", nome: "Agricoltura 3 - Frutta e ortaggi",
+    oggetto: ["Raccolta di frutta e ortaggi per conto terzi", "Supporto per la raccolta di {azienda}"],
+    testo: "Buongiorno,\n\nsiamo GOODJOB SRLS ed eseguiamo per conto terzi la raccolta di frutta e ortaggi, la cernita e la preparazione del prodotto per la vendita.\n\nPossiamo intervenire per l'intera stagione o solo nei momenti di maggiore lavoro.\n\nSaremmo felici di parlarne con {azienda} e preparare un preventivo.\n\n" },
+  { tipo: "agricoltura", nome: "Agricoltura 4 - Allevamenti e stalle",
+    oggetto: ["Lavori in stalla e in azienda agricola per {azienda}", "Servizi per allevamenti: GOODJOB SRLS"],
+    testo: "Buongiorno,\n\nGOODJOB SRLS esegue per conto terzi lavori di supporto alle aziende agricole e agli allevamenti: pulizia di stalle e aree agricole, movimentazione di materiali, carico e scarico.\n\nSe {azienda} ha bisogno di un aiuto continuativo o occasionale, siamo disponibili per un sopralluogo e un preventivo gratuito.\n\n" },
+  { tipo: "agricoltura", nome: "Agricoltura 5 - Breve e diretta",
+    oggetto: ["Lavori agricoli conto terzi in zona", "Una proposta per la stagione di {azienda}"],
+    testo: "Buongiorno,\n\nsiamo GOODJOB SRLS e lavoriamo per conto terzi in campo: raccolta, potatura, preparazione dei terreni.\n\nSe per la prossima stagione {azienda} cerca un'impresa affidabile, basta rispondere a questa mail o chiamarci.\n\n" },
+];
+
+function riempiModelli() {
+  const sel = $("modello");
+  sel.innerHTML = `<option value="">— scegli un modello —</option>` +
+    ["facchinaggio", "agricoltura"].map(t => `<optgroup label="${t === "facchinaggio" ? "Facchinaggio" : "Agricoltura"}">` +
+      MODELLI.map((m, i) => m.tipo === t ? `<option value="${i}">${esc(m.nome)}</option>` : "").join("") + `</optgroup>`).join("");
+  sel.onchange = () => {
+    const m = MODELLI[+sel.value];
+    if (!m) return;
+    if (($("oggetto").value.trim() || $("testo").value.trim()) && !confirm("Sostituire oggetto e testo con il modello scelto?")) { sel.value = ""; return; }
+    $("oggetto").value = m.oggetto.join("\n");
+    $("testo").value = m.testo + FIRMA;
+    document.querySelector(`input[name="scelta"][value="${m.tipo}"]`).checked = true;
+    avviso(`Modello "${m.nome}" caricato. Controlla e premi Salva. A chi scriviamo: ${m.tipo === "agricoltura" ? "Agricoltura" : "Facchinaggio"}.`);
+  };
+}
 
 const SCELTE = { facchinaggio: ["industria", "logistica"], agricoltura: ["agricoltura"], tutte: ["industria", "logistica", "agricoltura"] };
 function categorieScelte() {
