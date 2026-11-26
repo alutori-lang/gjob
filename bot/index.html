@@ -79,7 +79,10 @@
 
     <div class="card">
       <h2>2. La mail che mando a tutte</h2>
-      <input id="oggetto" type="text" placeholder="Oggetto della mail">
+      <p class="mut" style="margin-top:0"><b>Oggetto</b>: una versione per riga, il bot ne sceglie una a caso per ogni mail.
+        <b>Testo</b>: se vuoi più versioni separale con una riga che contiene solo <code>===</code>.
+        Scrivi <code>{azienda}</code> dove vuoi il nome dell'azienda (es. "Buongiorno, ci rivolgiamo a {azienda}...").</p>
+      <textarea id="oggetto" placeholder="Oggetto della mail (una versione per riga)" style="min-height:80px"></textarea>
       <div style="height:8px"></div>
       <textarea id="testo" placeholder="Testo della mail, con la firma in fondo"></textarea>
       <p class="mut">In fondo a ogni mail aggiungo da solo il link per chi non vuole più ricevere comunicazioni. Ogni indirizzo riceve la mail una volta sola.</p>
