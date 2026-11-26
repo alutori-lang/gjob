@@ -67,6 +67,7 @@
         <input id="citta" class="grow" type="text" placeholder="Es. Fidenza">
         <button id="cerca">Cerca aziende</button>
       </div>
+      <label class="chk" style="font-weight:500;margin-top:8px"><input id="vicini" type="checkbox"> Includi i comuni vicini (fino a circa 15 km)</label>
       <p class="mut">Cerca su TomTom le aziende della scelta qui sotto. Scarta negozi, supermercati, bar e ristoranti. Le email le prende dai siti delle aziende, poco alla volta (ogni 5 minuti).</p>
       <div class="row" id="scelta" style="gap:16px;margin-top:6px">
         <b>A chi scriviamo:</b>
@@ -280,8 +281,8 @@ $("cerca").onclick = async () => {
   if (!citta) return avviso("Scrivi una città.", "err");
   const b = $("cerca"); b.disabled = true; b.textContent = "Cerco… (1-2 minuti)";
   try {
-    const r = await chiama("cerca", { citta, categorie: categorieScelte() });
-    avviso(`${citta}: trovate ${r.trovate} aziende, ${r.tenute} adatte (le altre sono di altri comuni o negozi). Ora cerco i siti e le email poco alla volta: guarda la lista qui sotto.`);
+    const r = await chiama("cerca", { citta, categorie: categorieScelte(), vicini: $("vicini").checked });
+    avviso(`${citta}: trovate ${r.trovate} aziende, ${r.tenute} adatte (le altre sono negozi${$("vicini").checked ? "" : " o di altri comuni"}). Ora cerco i siti e le email poco alla volta: guarda la lista qui sotto.`);
     dati = await chiama("stato"); filtro = "tutte"; riempi(false);
   } catch (e) { avviso(e.message, "err"); }
   b.disabled = false; b.textContent = "Cerca aziende";
