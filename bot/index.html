@@ -67,7 +67,7 @@
         <input id="citta" class="grow" type="text" placeholder="Es. Fidenza">
         <button id="cerca">Cerca aziende</button>
       </div>
-      <p class="mut">Cerca su Google Maps aziende agricole, industrie e magazzini. Scarta negozi, supermercati, bar e ristoranti. Le email le prende dai siti delle aziende, poco alla volta (ogni 5 minuti).</p>
+      <p class="mut">Cerca su TomTom aziende agricole, industrie e magazzini. Scarta negozi, supermercati, bar e ristoranti. Le email le prende dai siti delle aziende, poco alla volta (ogni 5 minuti).</p>
     </div>
 
     <div class="card">
@@ -142,7 +142,7 @@ function riempi(tutto) {
     $("attivo").checked = s.attivo; $("limite").value = s.limite_giorno;
   }
   const avvisi = [];
-  if (dati.manca.google) avvisi.push("manca la chiave di Google Maps");
+  if (dati.manca.google) avvisi.push("manca la chiave di TomTom");
   if (dati.manca.smtp) avvisi.push("manca la password di info@gjob.it");
   if (avvisi.length) avviso("Da sistemare: " + avvisi.join(", ") + ".", "warn");
 
