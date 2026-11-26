@@ -67,7 +67,14 @@
         <input id="citta" class="grow" type="text" placeholder="Es. Fidenza">
         <button id="cerca">Cerca aziende</button>
       </div>
-      <p class="mut">Cerca su TomTom aziende agricole, industrie e magazzini. Scarta negozi, supermercati, bar e ristoranti. Le email le prende dai siti delle aziende, poco alla volta (ogni 5 minuti).</p>
+      <p class="mut">Cerca su TomTom le aziende della scelta qui sotto. Scarta negozi, supermercati, bar e ristoranti. Le email le prende dai siti delle aziende, poco alla volta (ogni 5 minuti).</p>
+      <div class="row" id="scelta" style="gap:16px;margin-top:6px">
+        <b>A chi scriviamo:</b>
+        <label class="chk" style="font-weight:500"><input type="radio" name="scelta" value="facchinaggio"> Facchinaggio (industrie e magazzini)</label>
+        <label class="chk" style="font-weight:500"><input type="radio" name="scelta" value="agricoltura"> Agricoltura (aziende agricole)</label>
+        <label class="chk" style="font-weight:500"><input type="radio" name="scelta" value="tutte"> Tutte e due</label>
+      </div>
+      <p class="mut">La scelta vale sia per la ricerca sia per l'invio: la mail parte solo alle aziende di questa scelta. Premi Salva (sotto) per cambiarla.</p>
     </div>
 
     <div class="card">
@@ -133,6 +140,17 @@ async function entra() {
 
 function esc(s) { return String(s ?? "").replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c])); }
 
+const SCELTE = { facchinaggio: ["industria", "logistica"], agricoltura: ["agricoltura"], tutte: ["industria", "logistica", "agricoltura"] };
+function categorieScelte() {
+  const v = document.querySelector('input[name="scelta"]:checked')?.value || "facchinaggio";
+  return SCELTE[v];
+}
+function mostraScelta(cat) {
+  const c = new Set(cat || []);
+  const v = c.has("agricoltura") ? (c.has("industria") ? "tutte" : "agricoltura") : "facchinaggio";
+  document.querySelector(`input[name="scelta"][value="${v}"]`).checked = true;
+}
+
 const ETICHETTE = { pronta: "Pronte da inviare", da_leggere: "Sito da leggere", inviata: "Inviate", senza_email: "Senza email", scartata: "Scartate", esclusa: "Tolte a mano", invii: "Ultimi invii" };
 
 function riempi(tutto) {
@@ -140,6 +158,7 @@ function riempi(tutto) {
   if (tutto) {
     $("oggetto").value = s.oggetto; $("testo").value = s.testo;
     $("attivo").checked = s.attivo; $("limite").value = s.limite_giorno;
+    mostraScelta(s.categorie);
   }
   const avvisi = [];
   if (dati.manca.google) avvisi.push("manca la chiave di TomTom");
@@ -191,7 +210,7 @@ $("cerca").onclick = async () => {
   if (!citta) return avviso("Scrivi una città.", "err");
   const b = $("cerca"); b.disabled = true; b.textContent = "Cerco… (1-2 minuti)";
   try {
-    const r = await chiama("cerca", { citta });
+    const r = await chiama("cerca", { citta, categorie: categorieScelte() });
     avviso(`${citta}: trovate ${r.trovate} aziende, ${r.tenute} adatte e con un sito. Leggo i siti poco alla volta.`);
     dati = await chiama("stato"); filtro = "da_leggere"; riempi(false);
   } catch (e) { avviso(e.message, "err"); }
@@ -200,7 +219,7 @@ $("cerca").onclick = async () => {
 
 $("salva").onclick = async () => {
   try {
-    await chiama("salva", { oggetto: $("oggetto").value, testo: $("testo").value, attivo: $("attivo").checked, limite_giorno: +$("limite").value });
+    await chiama("salva", { oggetto: $("oggetto").value, testo: $("testo").value, attivo: $("attivo").checked, limite_giorno: +$("limite").value, categorie: categorieScelte() });
     dati = await chiama("stato"); riempi(false); avviso("Salvato.");
   } catch (e) { avviso(e.message, "err"); }
 };
